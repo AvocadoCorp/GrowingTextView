@@ -32,6 +32,7 @@
 -(void)commonInitialiser;
 -(void)resizeTextView:(NSInteger)newSizeH;
 -(void)growDidStop;
+-(CGFloat)measureHeight;
 @end
 
 @implementation HPGrowingTextView
@@ -141,7 +142,7 @@
     
     internalTextView.text = newText;
     
-    maxHeight = internalTextView.contentSize.height;
+    maxHeight = [self measureHeight];
     
     internalTextView.text = saveText;
     internalTextView.hidden = NO;
@@ -170,7 +171,7 @@
     
     internalTextView.text = newText;
     
-    minHeight = internalTextView.contentSize.height;
+    minHeight = [self measureHeight];
     
     internalTextView.text = saveText;
     internalTextView.hidden = NO;
@@ -190,7 +191,7 @@
 - (void)textViewDidChange:(UITextView *)textView
 {	
 	//size of content, so we can set the frame of self
-	NSInteger newSizeH = internalTextView.contentSize.height;
+	NSInteger newSizeH = [self measureHeight];
 	if(newSizeH < minHeight || !internalTextView.hasText) newSizeH = minHeight; //not smalles than minHeight
   if (internalTextView.frame.size.height > maxHeight) newSizeH = maxHeight; // not taller than maxHeight
 
@@ -534,6 +535,39 @@
 	}
 }
 
+- (CGFloat)measureHeight
+{
+    if ([self respondsToSelector:@selector(snapshotViewAfterScreenUpdates:)])
+    {
+        CGRect frame = internalTextView.bounds;
+        CGSize fudgeFactor;
+        // The padding added around the text on iOS6 and iOS7 is different.
+        if ([self respondsToSelector:@selector(snapshotViewAfterScreenUpdates:)]) {
+            fudgeFactor = CGSizeMake(10.0, 16.0);
+        } else {
+            fudgeFactor = CGSizeMake(16.0, 16.0);
+        }
+        frame.size.height -= fudgeFactor.height;
+        frame.size.width -= fudgeFactor.width;
+        
+        NSDictionary *attributes = @{NSFontAttributeName: internalTextView.font};
+        
+#if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED == __IPHONE_7_0)
+        CGRect size = [internalTextView.text boundingRectWithSize:CGSizeMake(CGRectGetWidth(frame), MAXFLOAT)
+                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                      attributes:attributes
+                                         context:nil];
+        return CGRectGetHeight(size) + fudgeFactor.height;
+#else
+        return internalTextView.contentSize.height;
+#endif
+        
+    }
+    else
+    {
+        return self.internalTextView.contentSize.height;
+    }
+}
 
 
 @end
