@@ -58,15 +58,19 @@
     containerView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 40, 320, 40)];
     
 	textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
+    textView.isScrollable = NO;
     textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     
 	textView.minNumberOfLines = 1;
 	textView.maxNumberOfLines = 6;
+    // you can also set the maximum height in points with maxHeight
+    // textView.maxHeight = 200.0f;
 	textView.returnKeyType = UIReturnKeyGo; //just as an example
 	textView.font = [UIFont systemFontOfSize:15.0f];
 	textView.delegate = self;
     textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     textView.backgroundColor = [UIColor whiteColor];
+    textView.placeholder = @"Type to see the textView grow!";
     
     // textView.text = @"test\n\ntest";
 	// textView.animateHeightChange = NO; //turns off animation
@@ -139,6 +143,7 @@
 	
 	// set views with new info
 	containerView.frame = containerFrame;
+ 
 	
 	// commit animations
 	[UIView commitAnimations];
