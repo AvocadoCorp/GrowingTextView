@@ -123,4 +123,10 @@
 	[self setNeedsDisplay];
 }
 
+- (void)paste:(id)sender {
+    if ([self.growingTextViewDelegate respondsToSelector:@selector(growingTextViewDidPaste:)]) {
+        [self.growingTextViewDelegate growingTextViewDidPaste:sender];
+    }
+}
+
 @end

@@ -27,8 +27,11 @@
 
 #import <UIKit/UIKit.h>
 
+#import "HPGrowingTextView.h"
 
 @interface HPTextViewInternal : UITextView
+
+@property (weak, nonatomic) NSObject *growingTextViewDelegate;
 
 @property (nonatomic, strong) NSString *placeholder;
 @property (nonatomic, strong) UIColor *placeholderColor;

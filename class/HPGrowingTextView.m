@@ -116,6 +116,12 @@
     internalTextView.displayPlaceHolder = YES;
 }
 
+- (void)setDelegate:(NSObject<HPGrowingTextViewDelegate> *)aDelegate {
+    delegate = aDelegate;
+    
+    internalTextView.growingTextViewDelegate = aDelegate;
+}
+
 -(CGSize)sizeThatFits:(CGSize)size
 {
     if (self.text.length == 0) {
