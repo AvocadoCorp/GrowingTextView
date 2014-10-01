@@ -31,7 +31,7 @@
 
 @interface HPTextViewInternal : UITextView
 
-@property (weak, nonatomic) NSObject *growingTextViewDelegate;
+@property (weak, nonatomic) NSObject<HPGrowingTextViewDelegate> *growingTextViewDelegate;
 
 @property (nonatomic, strong) NSString *placeholder;
 @property (nonatomic, strong) UIColor *placeholderColor;
