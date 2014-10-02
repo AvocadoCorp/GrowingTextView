@@ -124,6 +124,8 @@
 }
 
 - (void)paste:(id)sender {
+    [super paste:sender];
+    
     if ([self.growingTextViewDelegate respondsToSelector:@selector(growingTextViewDidPaste:)]) {
         [self.growingTextViewDelegate growingTextViewDidPaste:sender];
     }
